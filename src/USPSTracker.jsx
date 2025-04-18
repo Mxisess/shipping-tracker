@@ -1,7 +1,4 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { MapPin, Truck, CheckCircle, AlertTriangle } from "lucide-react";
 import { format } from "date-fns";
 import {
@@ -104,18 +101,22 @@ export default function USPSTracker() {
         />
         <h1 className="text-3xl font-bold text-blue-900">USPS Package Tracking</h1>
       </div>
-      <Card className="mb-6 shadow-xl">
-        <CardContent className="flex flex-col gap-4 p-4">
-          <Input
-            placeholder="Tracking Number (e.g. LN123456789US)"
-            value={trackingNumber}
-            onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
-          />
-          <Button onClick={handleSubmit} disabled={!isValidTrackingNumber(trackingNumber)}>
-            Track Package
-          </Button>
-        </CardContent>
-      </Card>
+
+      <div className="mb-6 p-4 bg-white border rounded-xl shadow-xl">
+        <input
+          className="w-full p-2 border border-gray-300 rounded"
+          placeholder="Tracking Number (e.g. LN123456789US)"
+          value={trackingNumber}
+          onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
+        />
+        <button
+          className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded disabled:opacity-50"
+          onClick={handleSubmit}
+          disabled={!isValidTrackingNumber(trackingNumber)}
+        >
+          Track Package
+        </button>
+      </div>
 
       {submitted && (
         <>
