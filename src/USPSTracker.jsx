@@ -65,25 +65,24 @@ const getStatusIcon = (index, isLast) => {
   return isLast ? <CheckCircle className="text-green-500" /> : <Truck className="text-blue-500" />;
 };
 
-
-const getStatusNote = (index: number) => {
+const getStatusNote = (index) => {
   if (index === 3) return "Retraso en aduana - Panamá (15 días)";
   if (index === 4) return "Retraso por inspección - Perú (30 días)";
   if (index === 7) return "En aduanas - La Paz, Bolivia (10 días)";
   return null;
 };
 
-const getProgressPercentage = (current: number, total: number) => {
+const getProgressPercentage = (current, total) => {
   return Math.min(100, Math.round((current / total) * 100));
 };
 
-const isValidTrackingNumber = (trackingNumber: string) => {
+const isValidTrackingNumber = (trackingNumber) => {
   return /^[A-Z]{2}[0-9]{9}US$/.test(trackingNumber);
 };
 
 export default function USPSTracker() {
   const [trackingNumber, setTrackingNumber] = useState("");
-  const [locations, setLocations] = useState<string[]>([]);
+  const [locations, setLocations] = useState([]);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = () => {
@@ -181,12 +180,6 @@ export default function USPSTracker() {
       <footer className="mt-10 text-xs text-gray-500 text-center border-t pt-4">
         © {new Date().getFullYear()} United States Postal Service. All rights reserved.
       </footer>
-    </div>
-  );
-}
-
-        </>
-      )}
     </div>
   );
 }
