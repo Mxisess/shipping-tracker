@@ -73,18 +73,8 @@ const getProgressPercentage = (current, total) => {
   return Math.min(100, Math.round((current / total) * 100));
 };
 
-// Definir códigos de rastreo ficticios
-const validTrackingNumbers = [
-  "1Z12345E0291980793",
-  "LN123456789US",
-  "9400110897650012345678",
-  "EC123456789US",
-  "123456789012",
-  "JD014600004491234567"
-];
-
 const isValidTrackingNumber = (trackingNumber) => {
-  return validTrackingNumbers.includes(trackingNumber);
+  return /^[A-Z]{2}[0-9]{9}US$/.test(trackingNumber);
 };
 
 export default function USPSTracker() {
@@ -105,9 +95,9 @@ export default function USPSTracker() {
     <div className="max-w-xl mx-auto p-6 font-sans">
       <div className="flex items-center gap-2 mb-4">
         <img
-          src="https://1000logos.net/wp-content/uploads/2017/06/UPS-Logo-1993.png"
+          src="https://www.stickpng.com/img/icons-logos-emojis/iconic-brands/ups-logo"
           alt="UPS Logo"
-          className="h-10"
+          className="h-12"
         />
         <h1 className="text-3xl font-bold text-yellow-800">UPS Package Tracking</h1>
       </div>
