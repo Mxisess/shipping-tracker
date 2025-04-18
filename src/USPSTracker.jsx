@@ -65,6 +65,7 @@ const getStatusIcon = (index, isLast) => {
   return isLast ? <CheckCircle className="text-green-500" /> : <Truck className="text-blue-500" />;
 };
 
+
 const getStatusNote = (index) => {
   if (index === 3) return "Retraso en aduana - Panamá (15 días)";
   if (index === 4) return "Retraso por inspección - Perú (30 días)";
