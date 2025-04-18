@@ -92,25 +92,25 @@ export default function USPSTracker() {
   const progressPercent = getProgressPercentage(locations.length, LOCATIONS.length);
 
   return (
-    <div className="max-w-xl mx-auto p-6 font-sans">
+    <div className="max-w-xl mx-auto p-6 font-sans bg-gradient-to-r from-gray-50 to-gray-200">
       <div className="flex items-center gap-2 mb-4">
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/USPS_logo.svg/2560px-USPS_logo.svg.png"
-          alt="USPS Logo"
-          className="h-10"
+          src="https://1000logos.net/wp-content/uploads/2017/06/UPS-Logo-1993.png"
+          alt="UPS Logo"
+          className="h-12"
         />
-        <h1 className="text-3xl font-bold text-blue-900">USPS Package Tracking</h1>
+        <h1 className="text-3xl font-bold text-yellow-800">UPS Package Tracking</h1>
       </div>
 
-      <div className="mb-6 p-4 bg-white border rounded-xl shadow-xl">
+      <div className="mb-6 p-6 bg-white border rounded-xl shadow-xl">
         <input
-          className="w-full p-2 border border-gray-300 rounded"
+          className="w-full p-4 border border-gray-300 rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
           placeholder="Tracking Number (e.g. LN123456789US)"
           value={trackingNumber}
           onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
         />
         <button
-          className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded disabled:opacity-50"
+          className="mt-4 w-full bg-yellow-700 text-white py-3 px-6 rounded-lg disabled:opacity-50 hover:bg-yellow-800 transition"
           onClick={handleSubmit}
           disabled={!isValidTrackingNumber(trackingNumber)}
         >
@@ -121,17 +121,17 @@ export default function USPSTracker() {
       {submitted && (
         <>
           <div className="mb-6">
-            <div className="text-sm mb-1 font-medium">Shipment Progress:</div>
-            <div className="w-full bg-gray-200 rounded-full h-3">
+            <div className="text-sm mb-2 font-medium">Shipment Progress:</div>
+            <div className="w-full bg-gray-200 rounded-full h-4">
               <div
-                className="bg-blue-600 h-3 rounded-full transition-all duration-500"
+                className="bg-yellow-600 h-4 rounded-full transition-all duration-500"
                 style={{ width: `${progressPercent}%` }}
               ></div>
             </div>
-            <div className="text-xs text-gray-600 mt-1">{progressPercent}% completed</div>
+            <div className="text-xs text-gray-600 mt-2">{progressPercent}% completed</div>
           </div>
 
-          <div className="mb-8 rounded-xl overflow-hidden border border-gray-200 shadow">
+          <div className="mb-8 rounded-xl overflow-hidden border border-gray-200 shadow-lg">
             <ComposableMap projection="geoEqualEarth" width={800} height={300}>
               <Geographies geography="https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json">
                 {({ geographies }) =>
@@ -149,7 +149,7 @@ export default function USPSTracker() {
                 const [x, y] = COORDINATES[location];
                 return (
                   <Marker key={index} coordinates={[x, y]}>
-                    <circle r={5} fill="#FF5533" />
+                    <circle r={6} fill="#FF5733" />
                   </Marker>
                 );
               })}
@@ -158,15 +158,12 @@ export default function USPSTracker() {
 
           <div className="space-y-4">
             {locations.map((location, index) => (
-              <div key={index} className="flex items-center gap-4">
+              <div key={index} className="flex items-center gap-4 bg-gray-100 p-4 rounded-md shadow-md">
                 {getStatusIcon(index, index === locations.length - 1)}
                 <div>
-                  <div className="font-semibold text-blue-800">{location}</div>
+                  <div className="font-semibold text-yellow-800 text-xl">{location}</div>
                   <div className="text-sm text-gray-500">
-                    {format(
-                      new Date(Date.now() - (locations.length - index - 1) * 86400000),
-                      "PPPpp"
-                    )}
+                    {format(new Date(Date.now() - (locations.length - index - 1) * 86400000), "PPPpp")}
                   </div>
                   {getStatusNote(index) && (
                     <div className="text-sm text-yellow-600 italic">{getStatusNote(index)}</div>
@@ -179,7 +176,7 @@ export default function USPSTracker() {
       )}
 
       <footer className="mt-10 text-xs text-gray-500 text-center border-t pt-4">
-        © {new Date().getFullYear()} United States Postal Service. All rights reserved.
+        © {new Date().getFullYear()} United Parcel Service. All rights reserved.
       </footer>
     </div>
   );
