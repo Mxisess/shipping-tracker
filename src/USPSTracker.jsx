@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MapPin, Truck, CheckCircle, AlertTriangle } from "lucide-react";
 import { format } from "date-fns";
 import {
@@ -10,8 +10,8 @@ import {
 
 const LOCATIONS = [
   "Brooklyn, NY",
-  "Jamaica, NY (USPS International Facility)",
-  "Miami, FL (USPS International Distribution Center)",
+  "Jamaica, NY (UPS International Facility)",
+  "Miami, FL (UPS International Distribution Center)",
   "Panama City, Panama",
   "Lima, Peru",
   "Santa Cruz de la Sierra, Bolivia",
@@ -21,8 +21,8 @@ const LOCATIONS = [
 
 const COORDINATES = {
   "Brooklyn, NY": [-73.9442, 40.6782],
-  "Jamaica, NY (USPS International Facility)": [-73.7993, 40.6912],
-  "Miami, FL (USPS International Distribution Center)": [-80.1918, 25.7617],
+  "Jamaica, NY (UPS International Facility)": [-73.7993, 40.6912],
+  "Miami, FL (UPS International Distribution Center)": [-80.1918, 25.7617],
   "Panama City, Panama": [-79.5199, 8.9824],
   "Lima, Peru": [-77.0428, -12.0464],
   "Santa Cruz de la Sierra, Bolivia": [-63.1806, -17.7833],
@@ -74,7 +74,7 @@ const getProgressPercentage = (current, total) => {
 };
 
 const isValidTrackingNumber = (trackingNumber) => {
-  return /^[A-Z]{2}[0-9]{9}US$/.test(trackingNumber);
+  return /^[1Z]{2}[0-9]{6}[A-Z0-9]{2}[0-9]{8}$/.test(trackingNumber);
 };
 
 export default function USPSTracker() {
@@ -92,25 +92,25 @@ export default function USPSTracker() {
   const progressPercent = getProgressPercentage(locations.length, LOCATIONS.length);
 
   return (
-    <div className="max-w-xl mx-auto p-6 font-sans">
+    <div className="max-w-xl mx-auto p-6 bg-blue-100 font-sans">
       <div className="flex items-center gap-2 mb-4">
         <img
-          src="https://www.stickpng.com/img/icons-logos-emojis/iconic-brands/ups-logo"
+          src="https://www.ups.com/assets/resources/img/UPS-Logo.svg"
           alt="UPS Logo"
-          className="h-12"
+          className="h-16"
         />
-        <h1 className="text-3xl font-bold text-yellow-800">UPS Package Tracking</h1>
+        <h1 className="text-4xl font-bold text-yellow-700">UPS Package Tracking</h1>
       </div>
 
       <div className="mb-6 p-4 bg-white border rounded-xl shadow-xl">
         <input
           className="w-full p-2 border border-gray-300 rounded"
-          placeholder="Tracking Number (e.g. LN123456789US)"
+          placeholder="Tracking Number (e.g. 1Z12345E0291980793)"
           value={trackingNumber}
           onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
         />
         <button
-          className="mt-4 w-full bg-yellow-700 text-white py-2 px-4 rounded disabled:opacity-50"
+          className="mt-4 w-full bg-yellow-600 text-white py-2 px-4 rounded disabled:opacity-50"
           onClick={handleSubmit}
           disabled={!isValidTrackingNumber(trackingNumber)}
         >
@@ -161,7 +161,7 @@ export default function USPSTracker() {
               <div key={index} className="flex items-center gap-4">
                 {getStatusIcon(index, index === locations.length - 1)}
                 <div>
-                  <div className="font-semibold text-yellow-800">{location}</div>
+                  <div className="font-semibold text-yellow-700">{location}</div>
                   <div className="text-sm text-gray-500">
                     {format(
                       new Date(Date.now() - (locations.length - index - 1) * 86400000),
