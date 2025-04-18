@@ -98,7 +98,7 @@ export default function USPSTracker() {
   const progressPercent = getProgressPercentage(locations.length, LOCATIONS.length);
 
   return (
-    <div className="max-w-xl mx-auto p-6 font-sans bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500">
+    <div className="max-w-xl mx-auto p-6 font-sans bg-gradient-to-r from-indigo-500 via-blue-600 to-purple-700">
       <div className="flex items-center gap-2 mb-4">
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/UPS_Logo_2014.svg/800px-UPS_Logo_2014.svg.png"
@@ -151,6 +151,10 @@ export default function USPSTracker() {
                   ))
                 }
               </Geographies>
+              {/* Added a marker for the start point in Brooklyn, NY */}
+              <Marker coordinates={COORDINATES["Brooklyn, NY"]}>
+                <circle r={8} fill="#FF5533" />
+              </Marker>
               {locations.map((location, index) => {
                 const [x, y] = COORDINATES[location];
                 return (
