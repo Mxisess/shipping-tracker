@@ -37,18 +37,17 @@ const TRACKING_CODES = [
 ];
 
 const getTrackingProgress = () => {
+  const startDate = new Date(2025, 3, 23); // Start from April 23, 2025
   const today = new Date();
-  const startOfYear = new Date(today.getFullYear(), 0, 0);
-  const dayOfYear = Math.floor((today.getTime() - startOfYear.getTime()) / 86400000);
-
+  const daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)); // Calculate days passed since start
   const delays = {
-    3: 15,
-    4: 30,
-    7: 10,
+    3: 15,  // Delay of 15 days at Panama
+    4: 30,  // Delay of 30 days at Peru
+    7: 10,  // Delay of 10 days at Bolivia
   };
 
   let progress = 0;
-  let remainingDays = dayOfYear;
+  let remainingDays = daysPassed;
 
   for (let i = 0; i < LOCATIONS.length; i++) {
     if (remainingDays <= 0) break;
@@ -76,7 +75,8 @@ const getStatusNote = (index) => {
 };
 
 const getProgressPercentage = (current, total) => {
-  return Math.min(100, Math.round((current / total) * 100));
+  // Start from 10% and simulate progress
+  return Math.min(100, Math.round(10 + (current / total) * 90));
 };
 
 const isValidTrackingNumber = (trackingNumber) => {
