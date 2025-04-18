@@ -60,7 +60,7 @@ const getTrackingProgress = () => {
   return LOCATIONS.slice(0, progress);
 };
 
-const getStatusIcon = (index: number, isLast: boolean) => {
+const getStatusIcon = (index, isLast) => {
   if (index === 3 || index === 4 || index === 7) return <AlertTriangle className="text-yellow-500" />;
   return isLast ? <CheckCircle className="text-green-500" /> : <Truck className="text-blue-500" />;
 };
