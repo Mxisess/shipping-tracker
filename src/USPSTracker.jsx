@@ -9,7 +9,6 @@ import {
   Geographies,
   Geography,
   Marker,
-  Line,
 } from "react-simple-maps";
 
 const LOCATIONS = [
@@ -30,8 +29,8 @@ const COORDINATES = {
   "Panama City, Panama": [-79.5199, 8.9824],
   "Lima, Peru": [-77.0428, -12.0464],
   "Santa Cruz de la Sierra, Bolivia": [-63.1806, -17.7833],
-  "Cochabamba, Bolivia": [-66.1570, -17.3895],
-  "La Paz, Bolivia": [-68.1193, -16.5000],
+  "Cochabamba, Bolivia": [-66.157, -17.3895],
+  "La Paz, Bolivia": [-68.1193, -16.5],
 };
 
 const getTrackingProgress = () => {
@@ -77,12 +76,17 @@ const getProgressPercentage = (current: number, total: number) => {
   return Math.min(100, Math.round((current / total) * 100));
 };
 
-export default function USPSFakeTracker() {
+const isValidTrackingNumber = (trackingNumber: string) => {
+  return /^[A-Z]{2}[0-9]{9}US$/.test(trackingNumber);
+};
+
+export default function USPSTracker() {
   const [trackingNumber, setTrackingNumber] = useState("");
   const [locations, setLocations] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = () => {
+    if (!isValidTrackingNumber(trackingNumber)) return;
     const progress = getTrackingProgress();
     setLocations(progress);
     setSubmitted(true);
@@ -91,33 +95,42 @@ export default function USPSFakeTracker() {
   const progressPercent = getProgressPercentage(locations.length, LOCATIONS.length);
 
   return (
-    <div className="max-w-xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">USPS Tracking Simulator</h1>
-      <Card className="mb-6">
+    <div className="max-w-xl mx-auto p-6 font-sans">
+      <div className="flex items-center gap-2 mb-4">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/USPS_logo.svg/2560px-USPS_logo.svg.png"
+          alt="USPS Logo"
+          className="h-10"
+        />
+        <h1 className="text-3xl font-bold text-blue-900">USPS Package Tracking</h1>
+      </div>
+      <Card className="mb-6 shadow-xl">
         <CardContent className="flex flex-col gap-4 p-4">
           <Input
-            placeholder="Enter Tracking Number"
+            placeholder="Tracking Number (e.g. LN123456789US)"
             value={trackingNumber}
-            onChange={(e) => setTrackingNumber(e.target.value)}
+            onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
           />
-          <Button onClick={handleSubmit}>Track Package</Button>
+          <Button onClick={handleSubmit} disabled={!isValidTrackingNumber(trackingNumber)}>
+            Track Package
+          </Button>
         </CardContent>
       </Card>
 
       {submitted && (
         <>
           <div className="mb-6">
-            <div className="text-sm mb-1 font-medium">Progreso del envío:</div>
+            <div className="text-sm mb-1 font-medium">Shipment Progress:</div>
             <div className="w-full bg-gray-200 rounded-full h-3">
               <div
-                className="bg-blue-500 h-3 rounded-full transition-all duration-500"
+                className="bg-blue-600 h-3 rounded-full transition-all duration-500"
                 style={{ width: `${progressPercent}%` }}
               ></div>
             </div>
-            <div className="text-xs text-gray-600 mt-1">{progressPercent}% completado</div>
+            <div className="text-xs text-gray-600 mt-1">{progressPercent}% completed</div>
           </div>
 
-          <div className="mb-8">
+          <div className="mb-8 rounded-xl overflow-hidden border border-gray-200 shadow">
             <ComposableMap projection="geoEqualEarth" width={800} height={300}>
               <Geographies geography="https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json">
                 {({ geographies }) =>
@@ -125,7 +138,7 @@ export default function USPSFakeTracker() {
                     <Geography
                       key={geo.rsmKey}
                       geography={geo}
-                      fill="#EAEAEC"
+                      fill="#F0F0F0"
                       stroke="#D6D6DA"
                     />
                   ))
@@ -147,7 +160,7 @@ export default function USPSFakeTracker() {
               <div key={index} className="flex items-center gap-4">
                 {getStatusIcon(index, index === locations.length - 1)}
                 <div>
-                  <div className="font-semibold">{location}</div>
+                  <div className="font-semibold text-blue-800">{location}</div>
                   <div className="text-sm text-gray-500">
                     {format(
                       new Date(Date.now() - (locations.length - index - 1) * 86400000),
@@ -161,6 +174,16 @@ export default function USPSFakeTracker() {
               </div>
             ))}
           </div>
+        </>
+      )}
+
+      <footer className="mt-10 text-xs text-gray-500 text-center border-t pt-4">
+        © {new Date().getFullYear()} United States Postal Service. All rights reserved.
+      </footer>
+    </div>
+  );
+}
+
         </>
       )}
     </div>
